@@ -71,12 +71,12 @@
           localStorage.setItem(STORAGE_KEY, '1');
           setSubmittedState();
         } else {
-          showStatus('Ошибка при отправке. Попробуй ещё раз.', 'error');
+          showStatus('Ошибка при отправке. Попробуйте позднее.', 'error');
           resetButton();
         }
       })
       .catch(function () {
-        showStatus('Нет соединения. Попробуй ещё раз.', 'error');
+        showStatus('Нет соединения. Попробуйте позднее.', 'error');
         resetButton();
       });
   });
