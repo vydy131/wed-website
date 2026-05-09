@@ -178,22 +178,23 @@
 					</div>
 				</div>
 			</div>
-<!--			<div class="row animate-box">-->
-<!--				<div class="col-md-8 col-md-offset-2 text-center">-->
-<!--					<p class="alcohol-hint">Просим Вас отметить предпочитаемые напитки и подтвердить выбор</p>-->
-<!--					<div class="chip-group" id="alcohol-chips">-->
-<!--						<button class="chip" data-value="champagne">Шампанское</button>-->
-<!--						<button class="chip" data-value="wine-red">Красное вино</button>-->
-<!--						<button class="chip" data-value="wine-white">Белое вино</button>-->
-<!--						<button class="chip" data-value="beer">Пиво</button>-->
-<!--						<button class="chip" data-value="whiskey">Виски</button>-->
-<!--						<button class="chip" data-value="vodka">Водка</button>-->
-<!--						<button class="chip" data-value="cognac">Коньяк</button>-->
-<!--						<button class="chip" data-value="soft">Безалкогольное</button>-->
-<!--						&lt;!&ndash;						<button class="chip chip-none" data-value="none">Не пью</button>&ndash;&gt;-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
+			<div class="row animate-box">
+				<div class="col-md-8 col-md-offset-2 text-center">
+					<p class="alcohol-hint">Просим Вас отметить предпочитаемые напитки и подтвердить выбор</p>
+					<div class="chip-group" id="alcohol-chips">
+						<button class="chip" data-value="champagne">Шампанское</button>
+						<button class="chip" data-value="wine-red">Красное вино</button>
+						<button class="chip" data-value="wine-white">Белое вино</button>
+						<button class="chip" data-value="beer">Пиво</button>
+						<button class="chip" data-value="whiskey">Виски</button>
+						<button class="chip" data-value="vodka">Водка</button>
+						<button class="chip" data-value="cognac">Коньяк</button>
+						<button class="chip" data-value="soft">Безалкогольное</button>
+					</div>
+					<button class="alcohol-submit-btn" id="alcohol-submit">Подтвердить</button>
+					<div class="alcohol-status" id="alcohol-status"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -270,24 +271,6 @@
 	<script src="js/main.js"></script>
 
 	<!-- Alcohol chips -->
-	<script>
-	(function () {
-		const chips    = document.querySelectorAll('#alcohol-chips .chip');
-		const noneChip = document.querySelector('#alcohol-chips .chip-none');
-
-		chips.forEach(function (chip) {
-			chip.addEventListener('click', function () {
-				if (this === noneChip) {
-					const willSelect = !this.classList.contains('selected');
-					chips.forEach(function (c) { c.classList.remove('selected'); });
-					if (willSelect) noneChip.classList.add('selected');
-				} else {
-					this.classList.toggle('selected');
-					noneChip.classList.remove('selected');
-				}
-			});
-		});
-	}());
-	</script>
+	<script src="js/alcohol.js"></script>
 	</body>
 </html>

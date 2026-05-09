@@ -1586,6 +1586,59 @@ form label {
   }
 }
 
+.chip--disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ── Кнопка отправки ── */
+.alcohol-submit-btn {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 7px 24px;
+  background: #2c2c2c;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-family: "Sofia Sans Condensed";
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: background 0.2s, box-shadow 0.2s, opacity 0.2s;
+  transition: background 0.2s, box-shadow 0.2s, opacity 0.2s;
+  outline: none;
+}
+.alcohol-submit-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.alcohol-submit-btn:hover {
+  background: #444;
+  -webkit-box-shadow: 0 4px 14px -4px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 4px 14px -4px rgba(0, 0, 0, 0.35);
+}
+.alcohol-submit-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ── Статус-строка ── */
+.alcohol-status {
+  min-height: 28px;
+  margin-top: 14px;
+  font-family: "Sofia Sans Condensed";
+  font-size: 18px;
+}
+.alcohol-status--success {
+  color: #3a7d44;
+}
+.alcohol-status--error {
+  color: #c0392b;
+}
+
 /*# sourceMappingURL=style.css.map */
 
 /* ── 360–500 px: prevent overflow ── */
