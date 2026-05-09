@@ -6,6 +6,10 @@ $(document).ready(function() {
     'Hours':   'Часы',
     'Minutes': 'Минуты',
     'Seconds': 'Секунды'
+    // 'Days':    ' ',
+    // 'Hours':   ' ',
+    // 'Minutes': ' ',
+    // 'Seconds': ' '
   };
 
   function translateLabels() {
@@ -102,10 +106,52 @@ $(document).ready(function() {
     }
   }
 
+  // ── Column timer (< 550 px) ─────────────────────────────────────────────
+  function padLeft(n, digits) {
+    var s = String(n);
+    while (s.length < digits) s = '0' + s;
+    return s;
+  }
+
+  function buildColumnTimer() {
+    var flipbox = document.querySelector('.flipTimebox');
+    if (!flipbox || flipbox.querySelector('.column-timer')) return;
+
+    var col = document.createElement('div');
+    col.className = 'column-timer';
+    col.innerHTML =
+      '<div class="ct-row"><div class="ct-card"><span id="ct-days"></span></div><span class="ct-unit">дней</span></div>' +
+      '<div class="ct-row"><div class="ct-card"><span id="ct-hours"></span></div><span class="ct-unit">часов</span></div>' +
+      '<div class="ct-row"><div class="ct-card"><span id="ct-minutes"></span></div><span class="ct-unit">минут</span></div>' +
+      '<div class="ct-row"><div class="ct-card"><span id="ct-seconds"></span></div><span class="ct-unit">секунд</span></div>';
+    flipbox.appendChild(col);
+
+    function tick() {
+      var rem = Math.max(0, targetDate.valueOf() / 1000 - Date.now() / 1000);
+      var d = Math.floor(rem / 86400);
+      var h = Math.floor((rem % 86400) / 3600);
+      var m = Math.floor((rem % 3600) / 60);
+      var s = Math.floor(rem % 60);
+      var dEl = document.getElementById('ct-days');
+      var hEl = document.getElementById('ct-hours');
+      var mEl = document.getElementById('ct-minutes');
+      var sEl = document.getElementById('ct-seconds');
+      if (dEl) dEl.textContent = d;
+      if (hEl) hEl.textContent = padLeft(h, 2);
+      if (mEl) mEl.textContent = padLeft(m, 2);
+      if (sEl) sEl.textContent = padLeft(s, 2);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  }
+  // ────────────────────────────────────────────────────────────────────────
+
   // Translate labels and fix days-label alignment after FlipClock renders
   setTimeout(function() {
     translateLabels();
     centerDaysLabel();
+    buildColumnTimer();
   }, 200);
 
   // Re-center on resize and periodically (handles 3→2 digit transition at day 99)
