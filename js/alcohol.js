@@ -1,6 +1,5 @@
 (function () {
-  // Адрес запущенного bot.py (поменяй на публичный URL при деплое)
-  var BOT_ENDPOINT = 'http://localhost:8080/vote';
+  var BOT_ENDPOINT = 'https://victoriavladislav.ru/vote';
 
   var STORAGE_KEY = 'wed_alcohol_submitted';
 
