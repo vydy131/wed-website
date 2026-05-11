@@ -16,14 +16,17 @@ import os
 
 from aiohttp import web
 from aiohttp.web_middlewares import middleware
+from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
+load_dotenv()
+
 # ── Настройки ────────────────────────────────────────────────────────────────
 
-BOT_TOKEN = '8321411780:AAEpYrVdFB1nlTPov61j2mD-VS8UN7sPk30'
-CHAT_ID   = '-1003973098344'
-PORT      = 8080
+BOT_TOKEN = os.environ['BOT_TOKEN']
+CHAT_ID   = os.environ['CHAT_ID']
+PORT      = int(os.environ.get('PORT', 8080))
 DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.json')
 
 # ── Хранилище (votes.json) ───────────────────────────────────────────────────

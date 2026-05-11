@@ -9,7 +9,10 @@ pyvenv.cfg
 __pycache__/
 *.py[cod]
 
-# Runtime data — не хранить в репозитории
+# Секреты — не хранить в репозитории
+.env
+
+# Runtime data
 votes.json
 
 # IDE
