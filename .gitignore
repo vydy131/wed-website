@@ -1,0 +1,19 @@
+# Python virtual environment (bin/, lib/, include/, pyvenv.cfg)
+bin/
+include/
+lib/
+lib64
+pyvenv.cfg
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Runtime data — не хранить в репозитории
+votes.json
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
