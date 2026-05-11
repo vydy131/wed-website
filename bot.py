@@ -12,7 +12,15 @@ Telegram-бот: приём голосов с сайта + /stats.
 """
 import asyncio
 import json
+import logging
 import os
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
+log = logging.getLogger(__name__)
 
 from aiohttp import web
 from aiohttp.web_middlewares import middleware
@@ -30,6 +38,16 @@ PORT      = int(os.environ.get('PORT', 8080))
 DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.json')
 
 # ── Хранилище (votes.json) ───────────────────────────────────────────────────
+
+def init_storage() -> None:
+    if os.path.exists(DATA_FILE):
+        data = load_votes()
+        log.info('votes.json найден: %d голос(ов), напитков в статистике: %d',
+                 data['total'], len(data['drinks']))
+    else:
+        save_votes({'total': 0, 'drinks': {}})
+        log.info('votes.json не найден — создан новый пустой файл: %s', DATA_FILE)
+
 
 def load_votes() -> dict:
     if os.path.exists(DATA_FILE):
@@ -78,7 +96,7 @@ async def vote_handler(request: web.Request) -> web.Response:
             text = '🍾 Предпочтения по напиткам:\n' + ', '.join(drinks)
             await request.app['bot'].send_message(chat_id=CHAT_ID, text=text)
         except Exception as e:
-            print(f'[vote] Telegram notify error: {e}')
+            log.error('Telegram notify error: %s', e)
             data['total'] -= 1
             for drink in drinks:
                 key = str(drink)
@@ -91,7 +109,7 @@ async def vote_handler(request: web.Request) -> web.Response:
         return web.json_response({'ok': True})
 
     except Exception as e:
-        print(f'[vote] error: {e}')
+        log.error('vote handler error: %s', e)
         return web.Response(status=500, text=str(e))
 
 # ── /stats ────────────────────────────────────────────────────────────────────
@@ -144,6 +162,8 @@ async def reset_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 # ── Запуск ────────────────────────────────────────────────────────────────────
 
 async def main() -> None:
+    init_storage()
+
     tg_app = Application.builder().token(BOT_TOKEN).build()
     tg_app.add_handler(CommandHandler('stats', stats_command))
     tg_app.add_handler(CommandHandler('reset', reset_command))
@@ -157,11 +177,11 @@ async def main() -> None:
         runner = web.AppRunner(web_app)
         await runner.setup()
         await web.TCPSite(runner, '0.0.0.0', PORT).start()
-        print(f'✅ HTTP сервер на порту {PORT}')
+        log.info('HTTP сервер запущен на порту %d', PORT)
 
         await tg_app.start()
         await tg_app.updater.start_polling()
-        print('✅ Telegram бот запущен. Жду команды...')
+        log.info('Telegram бот запущен, жду команды...')
 
         try:
             await asyncio.Event().wait()
