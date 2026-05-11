@@ -39,7 +39,7 @@ BOT_TOKEN = os.environ['BOT_TOKEN']
 CHAT_ID   = os.environ['CHAT_ID']
 PORT      = int(os.environ.get('PORT', 8080))
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, 'votes.json')
+DATA_FILE = os.environ.get('DATA_FILE', os.path.join(BASE_DIR, 'votes.json'))
 
 # ── Хранилище (votes.json) ───────────────────────────────────────────────────
 
