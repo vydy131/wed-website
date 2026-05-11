@@ -22,6 +22,9 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
+# Подавляем INFO-логи httpx (иначе каждый getUpdates засоряет вывод)
+logging.getLogger('httpx').setLevel(logging.WARNING)
+
 from aiohttp import web
 from aiohttp.web_middlewares import middleware
 from dotenv import load_dotenv
@@ -35,7 +38,8 @@ load_dotenv()
 BOT_TOKEN = os.environ['BOT_TOKEN']
 CHAT_ID   = os.environ['CHAT_ID']
 PORT      = int(os.environ.get('PORT', 8080))
-DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'votes.json')
+BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, 'votes.json')
 
 # ── Хранилище (votes.json) ───────────────────────────────────────────────────
 
@@ -174,6 +178,24 @@ async def main() -> None:
         web_app['bot'] = tg_app.bot
         web_app.router.add_get('/health', lambda r: web.Response(text='ok'))
         web_app.router.add_post('/vote', vote_handler)
+
+        # Статика сайта
+        async def index(r: web.Request) -> web.FileResponse:
+            return web.FileResponse(os.path.join(BASE_DIR, 'index.html'))
+
+        web_app.router.add_get('/', index)
+        web_app.router.add_get('/index.html', index)
+        for folder in ('css', 'js', 'images', 'fonts'):
+            path = os.path.join(BASE_DIR, folder)
+            if os.path.isdir(path):
+                web_app.router.add_static(f'/{folder}', path)
+        for static_file in ('favicon.ico', 'favicon-32x32.png'):
+            fp = os.path.join(BASE_DIR, static_file)
+            if os.path.isfile(fp):
+                web_app.router.add_get(
+                    f'/{static_file}',
+                    lambda r, p=fp: web.FileResponse(p),
+                )
 
         runner = web.AppRunner(web_app)
         await runner.setup()

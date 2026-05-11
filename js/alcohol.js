@@ -1,5 +1,5 @@
 (function () {
-  var BOT_ENDPOINT = 'https://victoriavladislav.ru/vote';
+  var BOT_ENDPOINT = '/vote';
 
   var STORAGE_KEY = 'wed_alcohol_submitted';
 
