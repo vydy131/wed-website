@@ -172,6 +172,7 @@ async def main() -> None:
         # После initialize() tg_app.bot готов — передаём его в web_app
         web_app = web.Application(middlewares=[cors_middleware])
         web_app['bot'] = tg_app.bot
+        web_app.router.add_get('/health', lambda r: web.Response(text='ok'))
         web_app.router.add_post('/vote', vote_handler)
 
         runner = web.AppRunner(web_app)
